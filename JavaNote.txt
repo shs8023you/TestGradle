@@ -1,0 +1,44 @@
+运行 gradle build 的输出结果
+Output of gradle build
+> gradle build
+:compileJava
+:processResources
+:classes
+:jar
+:assemble		//编译并打包 jar 文件，但不会执行单元测试。一些其他插件可能会增强这个任务的功能。例如，如果采用了 War 插件，这个任务便会为你的项目打出 War 包。
+:compileTestJava
+:processTestResources
+:testClasses
+:test
+:check
+:build
+BUILD SUCCESSFUL
+Total time: 1 secs
+
+
+
+### 工程依赖
+同一个构建中可以建立工程依赖，一个工程的 jar 包可以提供给另外一个工程使用。例如我们可以让 api 工程以依赖于 shared 工程的 jar 包。这样 Gradle 在构建 api 之前总是会先构建 shared 工程。
+依赖：就是你需要的jar等
+依赖解决：告诉gradle依赖的位置
+依赖传递：你依赖的类库又依赖了其他依赖
+
+
+compile：编译范围依赖在所有的 classpath 中可用，同时它们也会被打包
+runtime：runtime 依赖在运行和测试系统的时候需要，但在编译的时候不需要。比如，你可能在编译的时候只需要 JDBC API JAR，而只有在运行的时候才需要 JDBC 驱动实现
+testCompile：测试期编译需要的附加依赖
+testRuntime：测试运行期需要
+
+
+定义外部依赖
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '3.6.7.Final'
+}
+可以缩写为：
+dependencies {
+    compile 'org.hibernate:hibernate-core:3.6.7.Final'
+}
+
+
+一个项目可以采用多个库。Gradle 会按照顺序从各个库里寻找所需的依赖文件，并且一旦找到第一个便停止搜索。
+gradle基于jvm
